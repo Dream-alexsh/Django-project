@@ -16,13 +16,9 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
-    ports:
-      - "5432:5432"
 
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME}/django-project:latest
     restart: always
     env_file:
       - .env
@@ -31,8 +27,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - "8000:8000"
 
   frontend:
     image: sermalenk/skypro-front:lesson-34
@@ -42,7 +36,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
 
 volumes:

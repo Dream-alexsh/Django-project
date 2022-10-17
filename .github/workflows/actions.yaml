@@ -24,3 +24,30 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Decrypt ansible
+        uses: anthonykgross/ansible-vault-cli-github-action@v1
+        with:
+          vault_key: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          command: "ansible-vault decrypt deploy/.env"
+      - name: Update compose
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          envsubst '$DOCKERHUB_USERNAME' < deploy/docker-compose.yaml > deploy/tmp.docker-compose.yaml
+          mv deploy/tmp.docker-compose.yaml deploy/docker-compose.yaml
+      - name: Copy on server
+        uses: appleboy/scp-action@master
+          with:
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            password: ${{ secrets.SSH_PASSWORD }}
+            source: "deploy/*"
+            target: todolist
+            strip_components: 1
