@@ -1,9 +1,6 @@
 name: Build and deploy
-on:
-  push:
-    tags:
-      - 'v*'
-    
+on: [push]
+
 jobs:
   build:
     runs_on: ubuntu-latest
@@ -14,7 +11,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/diplom
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/Django-project
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
