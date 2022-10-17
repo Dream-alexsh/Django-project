@@ -44,10 +44,10 @@ jobs:
           mv deploy/tmp.docker-compose.yaml deploy/docker-compose.yaml
       - name: Copy on server
         uses: appleboy/scp-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USER }}
-            password: ${{ secrets.SSH_PASSWORD }}
-            source: "deploy/*"
-            target: todolist
-            strip_components: 1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "deploy/*"
+          target: todolist
+          strip_components: 1
