@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST', default='127.0.0.1'),
+        'HOST': os.getenv('POSTGRES_HOST'),
         'PORT': '5432',
     }
 }
@@ -136,3 +136,4 @@ AUTH_USER_MODEL = 'core.User'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

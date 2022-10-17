@@ -5,24 +5,45 @@ services:
   postgres:
     image: postgres:13.0-alpine
     restart: always
-    env_file:
-      - todolist/.env
+    environment:
+      POSTGRES_USER: POSTGRES_USER
+      POSTGRES_DB: POSTGRES_DB
+      POSTGRES_PASSWORD: POSTGRES_PASSWORD
     volumes:
       - pg_data_todolist:/var/lib/postgresql/data
     healthcheck:
-      test: pg_isready -U postgres
+      test: pg_isready -U POSTGRES_USER -d POSTGRES_DB
       interval: 5s
       timeout: 3s
       retries: 3
     ports:
       - "5432:5432"
-    networks:
-      - backend_nw
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: sermalenk/skypro-front:lesson-34
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+
 
 volumes:
   pg_data_todolist:
 
-networks:
-  backend_nw:
-    driver: bridge
 
