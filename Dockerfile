@@ -5,6 +5,7 @@ WORKDIR opt/todolist
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY deploy/ ./
 COPY todolist/ ./
 COPY entrypoint.sh ./entrypoint.sh
 
