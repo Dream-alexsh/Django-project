@@ -35,7 +35,7 @@ jobs:
         uses: anthonykgross/ansible-vault-cli-github-action@v1
         with:
           vault_key: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
-          command: "ansible-vault decrypt .env"
+          command: "ansible-vault decrypt ./.env"
       - name: Update compose
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
