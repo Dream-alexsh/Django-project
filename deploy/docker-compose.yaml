@@ -18,7 +18,7 @@ services:
       retries: 3
 
   api:
-    image: alexshamin/django-project:latest
+    image: ${DOCKERHUB_USERNAME}/django-project:main
     restart: always
     env_file:
       - ./.env
