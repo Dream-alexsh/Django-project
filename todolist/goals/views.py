@@ -2,6 +2,7 @@ from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import permissions, filters
+from django.db import transaction
 
 from goals.models import GoalCategory, Goal, GoalComment
 from goals.serializers import GoalCreateSerializer, GoalCategorySerializer, GoalCreateCategorySerializer, GoalSerializer, GoalCommentCreateSerializer, GoalCommentSerializer
@@ -41,14 +42,13 @@ class GoalCategoryView(RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         return GoalCategory.objects.filter(user=self.request.user, is_deleted=False)
 
-    def perform_destroy(self, instance):
-        instance.is_deleted = True
-        goals = Goal.objects.filter(category=instance)
-        for goal in goals:
-            goal.is_deleted = True
-            goal.save()
-        instance.save()
-        return
+    def perform_destroy(self, instance: GoalCategory):
+        with transaction.atomic():
+            instance.is_deleted = True
+            instance.save(update_fields=('is_deleted',))
+            Goal.objects.filter(category=instance).update(status=Goal.Status.archived)
+
+        return instance
 
 
 class GoalCreateView(CreateAPIView):
@@ -86,9 +86,9 @@ class GoalView(RetrieveUpdateDestroyAPIView):
             Q(user_id=self.request.user.id) & ~Q(status=Goal.Status.archived)
         )
 
-    def perform_destroy(self, instance):
-        instance.is_deleted = True
-        instance.save()
+    def perform_destroy(self, instance: Goal):
+        instance.status = Goal.Status.archived
+        instance.save(update_fields=('status',))
         return instance
 
 
