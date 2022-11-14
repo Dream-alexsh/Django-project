@@ -29,9 +29,7 @@ services:
         condition: service_healthy
 
   bot:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME}/django-project:main
     restart: always
     env_file:
       - ./.env
