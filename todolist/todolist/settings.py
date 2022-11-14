@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django_filters',
     'core',
     'goals',
+    'bot',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,5 @@ SOCIAL_AUTH_VK_EXTRA_DATA = [
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/logged-in/'
 SOCIAL_AUTH_USER_MODEL = 'core.User'
 
+
+BOT_TOKEN=os.getenv('TOKEN_BOT')

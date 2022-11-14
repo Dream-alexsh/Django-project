@@ -109,4 +109,3 @@ class GoalComment(DatesModelMixin):
     def __str__(self):
         return self.text
 
-
