@@ -16,6 +16,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 3
+    networks:
+      - backend_nw
 
   api:
     image: ${DOCKERHUB_USERNAME}/django-project:main
@@ -27,6 +29,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - backend_nw
+      - frontend_nw
 
   bot:
     image: ${DOCKERHUB_USERNAME}/django-project:main
@@ -38,6 +43,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - backend_nw
 
   frontend:
     image: sermalenk/skypro-front:lesson-38
@@ -46,8 +53,15 @@ services:
       - api
     ports:
       - "80:80"
+    networks:
+      - frontend_nw
 
 volumes:
   pg_data_todolist:
 
+networks:
+  backend_nw:
+    driver: bridge
+  frontend_nw:
+    driver: bridge
 
