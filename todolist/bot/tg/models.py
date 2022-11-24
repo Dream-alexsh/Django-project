@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class MessageFrom(BaseModel):
     id: int
-    first_name: str | None = None
+    first_name: str
     last_name: str | None = None
     username: str | None = None
 

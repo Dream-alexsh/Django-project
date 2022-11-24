@@ -26,7 +26,7 @@ class NewGoal(BaseModel):
 
     @property
     def is_completed(self) -> bool:
-        return None not in [self.cat_id, self.goal_title]
+        return None not in (self.cat_id, self.goal_title)
 
 
 class StateEnum(IntEnum):

@@ -10,5 +10,5 @@ COPY entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "runbot"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 EXPOSE 8000

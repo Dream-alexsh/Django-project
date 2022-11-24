@@ -43,8 +43,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    command: python manage.py runbot
     networks:
       - backend_nw
+
 
   frontend:
     image: sermalenk/skypro-front:lesson-38

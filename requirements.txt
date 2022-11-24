@@ -6,3 +6,5 @@ social-auth-app-django==5.0.0
 django-filter==2.4.0
 pydantic==1.10.2
 requests==2.27.1
+pytest-django==4.5.2
+pytest-factoryboy==2.5.0
